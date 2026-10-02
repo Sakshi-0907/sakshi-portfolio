@@ -32,7 +32,7 @@ export const profile = {
   status: "Open to Werkstudent roles, up to 20 hours a week",
   email: "sakshigosavi0425@gmail.com",
   linkedin: "https://linkedin.com/in/sakshi-gosavi",
-  github: "https://github.com/YOUR-USERNAME", // TODO: replace
+    github: "https://github.com/Sakshi-0907", // TODO: replace
   resumeFile: "/Sakshi_Gosavi_Resume.pdf", // file in the /public folder
 };
 
@@ -98,7 +98,8 @@ export const projects: Project[] = [
     description:
       "Built from scratch with React and TypeScript. Responsive, keyboard accessible, supports dark mode and respects reduced-motion settings.",
     tech: ["React", "TypeScript", "CSS", "Vite"],
-    codeUrl: "https://github.com/YOUR-USERNAME/portfolio", // TODO: replace
+    codeUrl: "https://github.com/Sakshi-0907/sakshi-portfolio",
+    liveUrl: "https://sakshi-gosavi-portfolio.vercel.app",
   },
 ];
 
