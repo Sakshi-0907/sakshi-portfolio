@@ -42,6 +42,30 @@ export const about = [
   "Outside of code I'm a competitive rifle shooter, with a district-level gold medal and state-level competitions. It taught me the same thing good front-end work does: small details decide the result.",
 ];
 
+export type Degree = {
+  degree: string;
+  school: string;
+  location: string;
+  period: string;
+  grade?: string; // optional: only shown if filled in
+};
+
+export const education: Degree[] = [
+  {
+    degree: "MSc Data Science, AI & Digital Business",
+    school: "GISMA University of Applied Sciences",
+    location: "Potsdam, Germany",
+    period: "Sep 2025 – Present",
+  },
+  {
+    degree: "Bachelor of Engineering, Computer Science",
+    school: "ISBM College of Engineering, Savitribai Phule Pune University",
+    location: "Pune, India",
+    period: "Aug 2018 – Aug 2022",
+    grade: "CGPA: 8.37/10",
+  },
+];
+
 export const experience: Job[] = [
   {
     role: "UI Developer",
