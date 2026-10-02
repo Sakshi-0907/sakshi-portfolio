@@ -1,0 +1,251 @@
+/* ============================================================
+   styles.css — all styling for the site.
+   1. Design tokens (colors, fonts) as CSS variables
+   2. Base styles
+   3. Layout per section
+   4. Responsive + accessibility rules
+   ============================================================ */
+
+/* ---------- 1. Tokens: change a color here, it updates everywhere ---------- */
+:root {
+  --paper: #f7f9fb;
+  --ink: #1f2933;
+  --muted: #52606d;
+  --line: #d5dde6;
+  --navy: #1d3a6b;      /* main accent: target rings, links */
+  --signal: #c2410c;    /* used only for the bullseye and status dot */
+  --surface: #ffffff;
+
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+
+  --max: 1080px;
+}
+
+/* Dark mode follows the visitor's system setting */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0f1a2b;
+    --ink: #e6ebf2;
+    --muted: #a3b1c2;
+    --line: #2a3b55;
+    --navy: #8fb3ff;
+    --signal: #f97316;
+    --surface: #152338;
+  }
+}
+
+/* ---------- 2. Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+a { color: var(--navy); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+
+/* Visible keyboard focus on every interactive element */
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1, h2, h3 { line-height: 1.2; margin: 0; }
+h3 { font-size: 1.125rem; font-weight: 600; }
+p { margin: 0 0 1rem; }
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  background: var(--navy);
+  color: var(--paper);
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ---------- 3a. Header ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.nav-list {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-list a { color: var(--muted); text-decoration: none; font-size: 0.95rem; }
+.nav-list a:hover { color: var(--ink); }
+
+main { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+/* ---------- 3b. Hero ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 5rem 0 4rem;
+}
+
+.hero-name { color: var(--muted); font-weight: 500; margin-bottom: 1rem; }
+
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  max-width: 16ch;
+  margin-bottom: 1.5rem;
+}
+
+.hero-intro { max-width: 52ch; color: var(--muted); font-size: 1.125rem; }
+
+.hero-status { display: flex; align-items: center; gap: 0.6rem; font-weight: 500; }
+.status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--signal); }
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+
+.button {
+  display: inline-block;
+  padding: 0.7rem 1.2rem;
+  border: 2px solid var(--navy);
+  border-radius: 4px;
+  color: var(--navy);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.button:hover { background: var(--surface); }
+.button-primary { background: var(--navy); color: var(--paper); }
+.button-primary:hover { background: var(--ink); border-color: var(--ink); }
+
+/* The target graphic: rings draw in once on page load */
+.target { width: 100%; max-width: 340px; justify-self: center; overflow: visible; }
+.ring {
+  fill: none;
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  opacity: 0;
+  transform-origin: 160px 160px;
+  animation: ring-in 0.7s ease-out forwards;
+  animation-delay: calc(var(--i) * 0.12s);
+}
+.ring:nth-child(odd) { stroke-width: 3; }
+.crosshair { stroke: var(--line); stroke-width: 1; }
+.bullseye { fill: var(--signal); opacity: 0; animation: ring-in 0.4s ease-out 0.8s forwards; transform-origin: 160px 160px; }
+
+@keyframes ring-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ---------- 3c. Sections: title on the left, content on the right ---------- */
+.section {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  padding: 3.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.section-body { max-width: 68ch; }
+.meta { color: var(--muted); font-size: 0.95rem; margin: 0.25rem 0 0.75rem; }
+
+/* Experience timeline: a vertical line with a ring marker per job */
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline-item {
+  position: relative;
+  padding-left: 1.75rem;
+  padding-bottom: 2rem;
+  border-left: 2px solid var(--line);
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--navy);
+  border-radius: 50%;
+  background: var(--paper);
+}
+.timeline-item ul { margin: 0; padding-left: 1.1rem; }
+.timeline-item li { margin-bottom: 0.35rem; }
+
+/* Projects */
+.projects { display: grid; gap: 1.5rem; }
+.project {
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--navy);
+}
+.project h3 { margin-bottom: 0.5rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0 0 1rem; }
+.tags li { font-size: 0.85rem; padding: 0.15rem 0.6rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.project-links { display: flex; gap: 1.25rem; font-weight: 500; }
+.note { margin-top: 1.5rem; color: var(--muted); }
+
+/* Skills as a definition list */
+.skills { margin: 0; }
+.skill-row { display: grid; grid-template-columns: 150px 1fr; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--line); }
+.skill-row dt { font-weight: 600; }
+.skill-row dd { margin: 0; color: var(--muted); }
+
+.contact-lead { font-family: var(--font-display); font-size: 1.5rem; max-width: 30ch; }
+.footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- 4. Responsive: stack columns on small screens ---------- */
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; padding-top: 3rem; gap: 2rem; }
+  .target { max-width: 200px; order: -1; justify-self: start; }
+  .section { grid-template-columns: 1fr; gap: 1rem; }
+  .skill-row { grid-template-columns: 1fr; gap: 0.1rem; }
+  .nav-list { gap: 0.9rem; }
+  .nav-list a { font-size: 0.875rem; }
+}
+
+/* Respect visitors who turn off animations in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ring, .bullseye { animation: none; opacity: 1; }
+}
